@@ -4,7 +4,7 @@ from contextlib import redirect_stdout
 
 
 class Menu:
-    def __init__(self,funcs,numolabo=0,desc=None, help = True):
+    def __init__(self,funcs,numolabo=0,desc=None, help = True,globmenu=True):
         self.funcs=funcs
         self.numolabo=numolabo
         if desc is None:
@@ -20,6 +20,7 @@ class Menu:
         self.__rejimo = 2
         self.last_err = 'Пока ошибок не было. Счастливчик...'
         self.__help = help
+        self.globmenu = globmenu
 
 
     def __time_zamer(self,com):
@@ -74,7 +75,8 @@ class Menu:
         try:
             a = int(com[0])
             if 0 < a <= len(self.funcs):
-                print('━' * (message - 1) + '┓' + '\n' + ' ' * (message // 2 - 7) + f'Задание #{a:3}' + ' ' * (
+                if self.globmenu:
+                    print('━' * (message - 1) + '┓' + '\n' + ' ' * (message // 2 - 7) + f'Задание #{a:3}' + ' ' * (
                             message // 2 - 6) + '┃\n' + '━' * (message - 1) + '┛')
                 print()
                 print(self.description[a - 1])
@@ -90,7 +92,8 @@ class Menu:
                     print(f'Произашла ошибка с выполнением {a} задания')
             else:
                 for i in range(len(self.funcs)):
-                    print('━' * (message - 1) + '┓' + '\n' + ' ' * (message // 2 - 7) + f'Задание #{i + 1:3}' + ' ' * (
+                    if self.globmenu:
+                        print('━' * (message - 1) + '┓' + '\n' + ' ' * (message // 2 - 7) + f'Задание #{i + 1:3}' + ' ' * (
                                 message // 2 - 6) + '┃\n' + '━' * (message - 1) + '┛')
                     print()
                     print(self.description[i])
@@ -118,19 +121,21 @@ class Menu:
                       '\n\'cmp\'                    ::> Выводит список сравнения'
                       '\n\'cmpc\'                   ::> Очищает список сравнения'
                       '\n\'exit\'                   ::> Завершение работы меню \n\n')
-        fio='Студент группы , Вариант №16 '
+        fio='Студент группы, Вариант №16 '
         stroka = 64
         message = 48
-        print([stroka for stroka in self.description])
         if self.__help:
             print(cl)
         print('━'*(stroka-1)+'┓')
         print(' '*((stroka-len(fio))//2) + fio + ' '*((stroka-len(fio))//2 - 1)+'┃')
         print('━'*(message-1)+'┳'+'━'*(stroka-message-1)+'┛')
         print(' '* (message//2 - 5)+f'Лаба #{self.numolabo:3.3f}'+' '*(message//2 -7)+'┃')
-        print('━'*(message-1)+'┛')
+        print('━'*(message-1)+'┛\n')
 
-        print('Введите номер задания : ')
+        for el in self.description:
+            print(el)
+
+        print('\nВведите номер задания : ')
         while True:
             com=input('>').lower().split(' ')
             if com[0]=='exit':
@@ -165,7 +170,8 @@ class Menu:
             else:
                 self.__function_work(com,message)
             print()
-            print([stroka for stroka in self.description])
+            for el in self.description:
+                print(el)
 
 
 def koseno():
