@@ -60,7 +60,7 @@ class LIFO_ADT(ADT):
 
 class OneWayFIFA_ADT(ADT):
     def __init__(self):
-        self._in_stack = LIFO_ADT()
+        self._in_stack  = LIFO_ADT()
         self._out_stack = LIFO_ADT()
 
     def pop(self):

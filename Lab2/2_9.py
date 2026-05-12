@@ -1,5 +1,6 @@
 from support2_9 import GraphVisual as GV
 from klas_menu import Menu
+from L2_10 import floyd_path as FP, dijkstra_path as DP
 
 class Edge:
     def __init__(self, u: int, v: int, weight: float = 1.0):
@@ -128,42 +129,110 @@ class JGraph:
         return mat
 
     def show_smatrix(self):
-        lines = []
-        lines.append("\n >> Smejnost (N x N) <<")
+        lines="\n >> Smejnost (N x N) <<\n"
         adj = self.smezh_matrix()
-        header = " v\\v|" + "".join(f" v{v:<3}|" for v in range(self.__cnt))
-        lines.append(header)
+        lines += " v\\v|" + "".join(f" v{v:<3}|" for v in range(self.__cnt))+'\n'
         for i, row in enumerate(adj):
-            lines.append(f" v{i:<2}|" + "".join(f"{str(val):>5}|" for val in row))
+            lines+=(f" v{i:<2}|" + "".join(f"{str(val):>5}|" for val in row))+'\n'
         return lines
 
     def show_imatrix(self):
-        lines = []
-        lines.append("\n >> Incedence (M x N) <<")
+        lines ="\n >> Incedence (M x N) <<\n"
         inc = self.indent_matrix()
-        header = " e\\v|" + "".join(f" v{v:<3}|" for v in range(self.__cnt))
-        lines.append(header)
+        lines+=" e\\v|" + "".join(f" v{v:<3}|" for v in range(self.__cnt))+'\n'
         for i, row in enumerate(inc):
-            lines.append(f" e{i:<2}|" + "".join(f"{str(val):>5}|" for val in row))
+            lines+=f" e{i:<2}|" + "".join(f"{str(val):>5}|" for val in row)+"\n"
         return lines
 
     def show_imatrix_v2(self):
-        lines = ["\n >> Incedence (M x N + [w]) <<"]
+        lines = "\n >> Incedence (M x N + [w]) <<\n"
 
         inc = self.indent_matrix_v2()
 
         header = " e\\v|" + "".join(f" v{v:<3}|" for v in range(self.__cnt))
         if self.__weighted:
             header += "  w  |"
-        lines.append(header)
+        lines+=header+'\n'
 
         for i, row in enumerate(inc):
             row_str = "".join(f"{str(val):>5}|" for val in row[:self.__cnt])
             if self.__weighted and len(row) > self.__cnt:
-                row_str += f"{row[self.__cnt]:>5}|"
-            lines.append(f" e{i:<2}|{row_str}")
+                row_str += f"{row[self.__cnt]:>5}|\n"
+            lines+=f" e{i:<2}|{row_str}\n"
 
         return lines
+
+    def svzyaz_components(self):
+        mat = self.smezh_matrix()
+        n = self.__cnt
+        visited = [False]*n
+        components =[]
+        for v in range(n):
+            if not visited[v]:
+                comp = []
+                stack = []
+                stack.append(v)
+                visited[v] = True
+
+                while len(stack) > 0:
+                    curr = stack.pop()
+                    comp.append(curr)
+
+                    for j in range(n):
+                        if mat[curr][j] != 0 and not visited[j]:
+                            visited[j] = True
+                            stack.append(j)
+
+                comp.sort()
+                components.append(comp)
+        return components
+
+    def find_strong_components(self) -> list[list[int]]:
+        if not self.__directed:
+            return self.find_components_via_matrix()
+
+        n = self.__cnt
+        adj = self.smezh_matrix()
+        adj_t = [[adj[j][i] for j in range(n)] for i in range(n)]
+
+        visited = [False] * n
+        finish_order = []
+
+        for start in range(n):
+            if not visited[start]:
+                stack = [start]
+                visited[start] = True
+                while stack:
+                    v = stack[-1]
+                    next_v = -1
+                    for j in range(n):
+                        if adj[v][j] != 0 and not visited[j]:
+                            next_v = j
+                            break
+                    if next_v != -1:
+                        visited[next_v] = True
+                        stack.append(next_v)
+                    else:
+                        finish_order.append(stack.pop())
+
+        visited = [False] * n
+        sccs = []
+
+        for v in reversed(finish_order):
+            if not visited[v]:
+                comp = []
+                stack = [v]
+                visited[v] = True
+                while stack:
+                    curr = stack.pop()
+                    comp.append(curr)
+                    for j in range(n):
+                        if adj_t[curr][j] != 0 and not visited[j]:
+                            visited[j] = True
+                            stack.append(j)
+                sccs.append(sorted(comp))
+
+        return sccs
 
     def __repr__(self):
         lines = [
@@ -180,7 +249,7 @@ class JGraph:
         lines+=self.show_imatrix_v2()
 
 
-        return "\n".join(lines)
+        return lines
 
     def Graphic_Graph(self):
         GV(cnt=self.__cnt,rts=self.ret_rts(),is_naprav=self.__directed,vzves=self.__weighted, gr_label=self.name)
@@ -226,8 +295,14 @@ if __name__ == "__main__":
             lambda :print(new_gr.show_imatrix()),
             lambda :print(new_gr.show_imatrix_v2()),
 
-            lambda  :print(new_gr.__repr__()),
-            lambda  :new_gr.Graphic_Graph()
+            lambda :print(new_gr.svzyaz_components()),
+            lambda :print(new_gr.find_strong_components()),
+
+            lambda :print(new_gr.__repr__()),
+            lambda :new_gr.Graphic_Graph(),
+
+            lambda *args:print(FP(new_gr.ret_cnt(),new_gr.ret_rts(),args[0],args[1],directed=new_gr.isDir())),
+            lambda *args:print(DP(new_gr.ret_cnt(),new_gr.ret_rts(),args[0],args[1],directed=new_gr.isDir()))
     ]
     descriptions = ("1)addedge *u *v *w         добавляет ребро из \'u\' в \'v\' с весом \'w\'\n"
                     "2)rmedge *i                удаляет ребро с индексом \'i\'\n"
@@ -245,8 +320,13 @@ if __name__ == "__main__":
                     "14)show_smatrix            красивый вывод в консоль 11 матрицы\n"
                     "15)show_imatrix            красивый вывод в консоль 12 матрицы\n"
                     "16)show_imatrix_v2         красивый вывод в консоль 13 матрицы\n"
-                    "17)                        самый полный вывод информации о графе(для отладки)\n"
-                    "18)Graphic_Graph           графический вывод графа")
+                    "17)components              компоненты связности\n"
+                    "18)strong components       компоненты сильной связности\n"
+                    "19)                        самый полный вывод информации о графе(для отладки)\n"
+                    "20)Graphic_Graph           графический вывод графа\n"
+                    "21)Floyd-W Path *a *b      поиск кратчайшего пути в графе из вершины \'a\' в \'b\' алгоритмом Флойда-Уоршелла\n"
+                    "22)DijkstraPath *a *b      поиск кратчайшего пути в графе из вершины \'a\' в \'b\' алгоритмом Дийкстры"
+                    )
 
     men = Menu(funcs=funcs,desc=descriptions,numolabo=2.9)
     men.start()

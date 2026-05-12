@@ -2,14 +2,15 @@ import random
 
 from klas_menu import Menu
 
-descript = ('Перемешываем массивчик'
-            '\nПоказываем массивчик'
-            '\n1)Сортировка вставками'
-            '\n2)Сортировка выбором'
-            '\n3)Сортировка пузырьком'
-            '\n4)Сортировка Шелла'
+descript = ('1)Сортировка вставками(Защитил)'
+            '\n2)Сортировка выбором(Защитил)'
+            '\n3)Сортировка пузырьком(Защитил)'
+            '\n4)Сортировка Шелла(Защитил)'
             '\n5)Сортировка слиянием'
-            '\n6)Быстрая сортировка')
+            '\n6)Быстрая сортировка'
+            '\n7)Перемешываем массивчик'
+            '\n8)Показываем массивчик'
+            )
 
 def III_Insert(massive):
     if len(massive) <=1:
@@ -144,6 +145,6 @@ def s_s():
 
 if __name__ == '__main__':
     shuffle_array()
-    funcs=[shuffle_array,show_array, i_s, s_s, b_s,sh_s,m_s,q_s]
+    funcs=[ i_s, s_s, b_s,sh_s,m_s,q_s,shuffle_array,show_array]
     menu = Menu(numolabo=2.345,funcs=funcs,desc=descript)
     menu.start()

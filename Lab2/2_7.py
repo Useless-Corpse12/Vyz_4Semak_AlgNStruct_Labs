@@ -226,8 +226,10 @@ class DoubleLinkedList:
     def add(self, value, position=1):
         position = int(position)
         if position==self.length:
+            new = self.popback()
             self.pushback(value)
-            pass
+            self.pushback(new)
+            return 0
         elif position > self.length or position == 0:
             raise IndexError(f'DoubleLinkedlist back error. params : pos = {position}, length = {self.length}')
         elif position < 0:
@@ -252,8 +254,10 @@ class DoubleLinkedList:
 
     def __addback(self, value, position):
         if position==self.length:
+            new = self.pop()
             self.push(value)
-            pass
+            self.push(new)
+            return 0
         elif position > self.length:
             raise IndexError(f'DoubleLinkedlist __addback error. params : pos = {position}, length = {self.length}')
 
