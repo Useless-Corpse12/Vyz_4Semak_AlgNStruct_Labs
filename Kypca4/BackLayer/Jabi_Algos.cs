@@ -94,6 +94,7 @@ namespace SotoviyOperator
         {
             message = null; return true;
         }
+
         /*
         public static double PercentCheckout(string text, string pattern)
         {

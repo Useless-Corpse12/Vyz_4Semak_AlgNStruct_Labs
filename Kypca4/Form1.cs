@@ -1,4 +1,5 @@
-﻿using SotoviyOperator.DataHandlers.Clients;
+﻿using SotoviyOperator.BackLayer.Sim_Cards;
+using SotoviyOperator.DataHandlers.Clients;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -141,9 +142,7 @@ namespace SotoviyOperator
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            int TodayYear = DateTime.Today.Year;
-            ((Button)sender).Text = TodayYear.ToString();
+            ((Button)sender).Text = HashTable.JHash1(((Button)sender).Text).ToString();
         }
 
         private void Del_ClientButton_Click(object sender, EventArgs e)
