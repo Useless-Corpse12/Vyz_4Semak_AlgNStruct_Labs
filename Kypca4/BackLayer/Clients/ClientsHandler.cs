@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SotoviyOperator.DataHandlers.Clients
+namespace SotoviyOperator.BackLayer.Clients
 {
     public class ClientsHandler
     {
@@ -51,24 +47,12 @@ namespace SotoviyOperator.DataHandlers.Clients
             return result;
         }
 
-        public void RmClient(string passport)
-        {
-            _tree.Delete(passport);
-        }
+        public void RmClient(string passport) => _tree.Delete(passport);
 
-        public void AddClient(Client client)
-        {
-            _tree.Insert(client);
-        }
+        public void AddClient(Client client) => _tree.Insert(client);
 
-        public List<Client> GetPre()
-        {
-            return _tree.PreOrder();
-        }
+        public List<Client> GetPre() {return _tree.PreOrder();}
 
-        public List<Client> GetIn()
-        {
-            return _tree.InOrder();
-        }
+        public List<Client> GetIn() {return _tree.InOrder();}
     }
 }

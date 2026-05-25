@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace SotoviyOperator.DataHandlers.Clients
+namespace SotoviyOperator.BackLayer.Clients
 {
     public class AVLNode
     {
-        public Client   Data    { get; set; }
-        public AVLNode  Left    { get; set; }
-        public AVLNode  Right   { get; set; }
-        public int      Height  { get; set; }
+        public Client Data { get; set; }
+        public AVLNode Left { get; set; }
+        public AVLNode Right { get; set; }
+        public int Height { get; set; }
         public AVLNode(Client client)
         {
-            Data   = client;
+            Data = client;
             Height = 1;
         }
     }
@@ -43,8 +39,8 @@ namespace SotoviyOperator.DataHandlers.Clients
             return Rebalance(node);
         }
 
-        private int GetHeight(AVLNode node)  => node == null ? 0 : node.Height;
-        private int GetBalance(AVLNode node) => node == null ? 0: GetHeight(node.Left)-GetHeight(node.Right);
+        private int GetHeight(AVLNode node) => node == null ? 0 : node.Height;
+        private int GetBalance(AVLNode node) => node == null ? 0 : GetHeight(node.Left) - GetHeight(node.Right);
 
         public Client Search(string passport)
         {
@@ -66,7 +62,6 @@ namespace SotoviyOperator.DataHandlers.Clients
 
         private AVLNode DeleteNode(AVLNode node, string passport)
         {
-            // 1. Стандартное удаление из BST
             if (node == null)
                 return null;
             int cmp = string.Compare(passport, node.Data.Passport);
@@ -89,7 +84,7 @@ namespace SotoviyOperator.DataHandlers.Clients
                     }
                     else
                     {
-                        node = temp; // Копируем содержимое
+                        node = temp;
                     }
                 }
                 else
@@ -199,9 +194,9 @@ namespace SotoviyOperator.DataHandlers.Clients
         {
             if (node == null) return;
 
-            list.Add(node.Data);           
-            PreOrderRec(node.Left, list);  
-            PreOrderRec(node.Right, list); 
+            list.Add(node.Data);
+            PreOrderRec(node.Left, list);
+            PreOrderRec(node.Right, list);
         }
     }
 }

@@ -221,7 +221,7 @@
             // 
             this.Hello_panel.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.Hello_panel.Controls.Add(this.Masterstroke);
-            this.Hello_panel.Location = new System.Drawing.Point(927, 12);
+            this.Hello_panel.Location = new System.Drawing.Point(809, 6);
             this.Hello_panel.Name = "Hello_panel";
             this.Hello_panel.Size = new System.Drawing.Size(200, 100);
             this.Hello_panel.TabIndex = 3;
@@ -624,7 +624,7 @@
             this.SimC_panel.Controls.Add(this.SimCGridView);
             this.SimC_panel.Location = new System.Drawing.Point(1072, 440);
             this.SimC_panel.Name = "SimC_panel";
-            this.SimC_panel.Size = new System.Drawing.Size(88, 713);
+            this.SimC_panel.Size = new System.Drawing.Size(591, 713);
             this.SimC_panel.TabIndex = 6;
             this.SimC_panel.Visible = false;
             // 
@@ -666,14 +666,23 @@
             // 
             // comboBox2
             // 
+            this.comboBox2.DisplayMember = "1";
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Номер",
+            "Тариф",
+            "Год"});
             this.comboBox2.Location = new System.Drawing.Point(6, 35);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(328, 21);
             this.comboBox2.TabIndex = 20;
+            this.comboBox2.ValueMember = "1";
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // SimCSearchTariffCBox
             // 
+            this.SimCSearchTariffCBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SimCSearchTariffCBox.FormattingEnabled = true;
             this.SimCSearchTariffCBox.Location = new System.Drawing.Point(6, 75);
             this.SimCSearchTariffCBox.Name = "SimCSearchTariffCBox";
@@ -739,6 +748,7 @@
             // SimCAviableChkBox
             // 
             this.SimCAviableChkBox.AutoSize = true;
+            this.SimCAviableChkBox.Enabled = false;
             this.SimCAviableChkBox.Location = new System.Drawing.Point(9, 139);
             this.SimCAviableChkBox.Name = "SimCAviableChkBox";
             this.SimCAviableChkBox.Size = new System.Drawing.Size(65, 17);
@@ -748,6 +758,7 @@
             // 
             // SimCTariffCBox
             // 
+            this.SimCTariffCBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SimCTariffCBox.FormattingEnabled = true;
             this.SimCTariffCBox.Location = new System.Drawing.Point(6, 74);
             this.SimCTariffCBox.Name = "SimCTariffCBox";
@@ -778,7 +789,7 @@
             this.Add_SimCButton.Name = "Add_SimCButton";
             this.Add_SimCButton.Size = new System.Drawing.Size(328, 23);
             this.Add_SimCButton.TabIndex = 13;
-            this.Add_SimCButton.Text = "Добавить";
+            this.Add_SimCButton.Text = "Добавить/изменить";
             this.Add_SimCButton.UseVisualStyleBackColor = true;
             // 
             // label10
@@ -836,9 +847,9 @@
             this.Journal_panel.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.Journal_panel.Controls.Add(this.JournalPageRightPanel);
             this.Journal_panel.Controls.Add(this.JournalGridView);
-            this.Journal_panel.Location = new System.Drawing.Point(1157, 61);
+            this.Journal_panel.Location = new System.Drawing.Point(1024, 9);
             this.Journal_panel.Name = "Journal_panel";
-            this.Journal_panel.Size = new System.Drawing.Size(64, 347);
+            this.Journal_panel.Size = new System.Drawing.Size(897, 425);
             this.Journal_panel.TabIndex = 7;
             this.Journal_panel.Visible = false;
             // 
@@ -858,9 +869,9 @@
             this.JournalRevokeToolBox.Controls.Add(this.comboBox1);
             this.JournalRevokeToolBox.Controls.Add(this.button6);
             this.JournalRevokeToolBox.Controls.Add(this.label18);
-            this.JournalRevokeToolBox.Location = new System.Drawing.Point(0, 406);
+            this.JournalRevokeToolBox.Location = new System.Drawing.Point(0, 348);
             this.JournalRevokeToolBox.Name = "JournalRevokeToolBox";
-            this.JournalRevokeToolBox.Size = new System.Drawing.Size(340, 92);
+            this.JournalRevokeToolBox.Size = new System.Drawing.Size(340, 150);
             this.JournalRevokeToolBox.TabIndex = 4;
             this.JournalRevokeToolBox.TabStop = false;
             this.JournalRevokeToolBox.Text = "Отозвать";
@@ -1000,7 +1011,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1233, 1061);
+            this.ClientSize = new System.Drawing.Size(1924, 1061);
             this.Controls.Add(this.Journal_panel);
             this.Controls.Add(this.SimC_panel);
             this.Controls.Add(this.DEBUG_panel);

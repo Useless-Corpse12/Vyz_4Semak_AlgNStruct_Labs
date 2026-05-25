@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SotoviyOperator.BackLayer.Sim_Cards
 {
@@ -44,7 +41,7 @@ namespace SotoviyOperator.BackLayer.Sim_Cards
             return (hash % (_TABLE_SIZE-1))+1;
         }
 
-        internal void Add(SimC sim)
+        public void Add(SimC sim)
         {
             int start = JHash1(sim.Number);
             int step = JHash2(sim.Number);
@@ -70,7 +67,7 @@ namespace SotoviyOperator.BackLayer.Sim_Cards
             throw new InvalidOperationException("Хеш-таблица переполнена.");
         }
 
-        internal SimC Search(string number)
+        public SimC Search(string number)
         {
             int start = JHash1(number);
             int step = JHash2(number);
@@ -79,14 +76,14 @@ namespace SotoviyOperator.BackLayer.Sim_Cards
             {
                 int idx = (start + i * step) % _TABLE_SIZE;
 
-                if (_table[idx] == null) return null; // Тупик, элемента нет
-                if (_table[idx].IsDeleted) continue;  // Пропускаем удалённые
+                if (_table[idx] == null) return null; 
+                if (_table[idx].IsDeleted) continue; 
                 if (_table[idx].Data.Number == number) return _table[idx].Data;
             }
             return null;
         }
 
-        internal bool Remove(string number)
+        public bool Remove(string number)
         {
             int start = JHash1(number);
             int step = JHash2(number);
@@ -105,7 +102,7 @@ namespace SotoviyOperator.BackLayer.Sim_Cards
             return false;
         }
 
-        internal List<SimC> GetAll()
+        public List<SimC> GetAll()
         {
             var list = new List<SimC>(_TABLE_SIZE);
             foreach (var cell in _table)

@@ -49,6 +49,7 @@
     <Compile Include="BackLayer\Clients\AVLTree.cs" />
     <Compile Include="BackLayer\Clients\Client.cs" />
     <Compile Include="BackLayer\Clients\ClientsHandler.cs" />
+    <Compile Include="BackLayer\RngAddition.cs" />
     <Compile Include="BackLayer\Sim-Cards\HashTable.cs" />
     <Compile Include="BackLayer\Sim-Cards\SimC.cs" />
     <Compile Include="BackLayer\Sim-Cards\SimCHandler.cs" />

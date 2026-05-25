@@ -1,41 +1,63 @@
 ﻿using SotoviyOperator.BackLayer.Sim_Cards;
-using SotoviyOperator.DataHandlers.Clients;
+using SotoviyOperator.BackLayer.Clients;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SotoviyOperator
 {
     public partial class Main : Form
     {
 
+        public static readonly string[] AllTariffs = new[]
+        {
+        "Морзе",
+        "Радио",
+        "ГосУслуги и хватит",
+        "Белые списки+",
+        "Социальный",
+        "Антисоциальный"
+        };
+
         private Panel[] PanelMassive;
         private string[]  PanelNames;
         private ClientsHandler ClH = new ClientsHandler();
+        private SimCHandler SCH = new SimCHandler();
+
         private bool GridUPDTStop = false;
         public Main()
         {
             InitializeComponent();
+
             PanelMassive = new Panel[]  { Hello_panel, DEBUG_panel, Clients_panel, SimC_panel, Journal_panel };
             PanelNames   = new string[] { "", " : DEBUG", " : Клиенты", " : Sim - карты", " : Журнал" };
+
             this.Size = this.MinimumSize;
             this.Height += 180;
-            for (int i = 0; i < PanelMassive.Length; i++) PanelMassive[i].Dock = DockStyle.Fill;    
+
+            for (int i = 0; i < PanelMassive.Length; i++) PanelMassive[i].Dock = DockStyle.Fill;   
+            
             ClientPageRightPanel.Dock = DockStyle.Right;
             ClientGridView.Dock = DockStyle.Fill;
+
             SimCPageRightPanel.Dock = DockStyle.Right;
             SimCGridView.Dock = DockStyle.Fill;
+
             JournalPageRightPanel.Dock = DockStyle.Right;
             JournalGridView.Dock = DockStyle.Fill;
-            Masterstroke.Items.Add(System.DateTime.Today.ToString("dd MMMM yyyy"));
+
+            Masterstroke.Items.Add(DateTime.Today.ToString("dd MMMM yyyy"));
             RefreshClientGrid();
+
+            SimCTariffCBox.DataSource = AllTariffs.ToList();
+            SimCSearchTariffCBox.DataSource = AllTariffs.ToList();
+
+            comboBox2.SelectedIndex = 0;
+
+           // SimCTariffCBox.Text = SimCTariffCBox.Items[0].ToString();
+            //SimCSearchTariffCBox.Text = SimCSearchTariffCBox.Items[0].ToString();
+
             //PanelsResizeNRelocate();
 
         }
@@ -202,15 +224,21 @@ namespace SotoviyOperator
         {
             string indata = ClientPassSearchTBox.Text;
             if (!Jabi_Algos.ClientPassportValidation(indata, out string cnfpsp, out string message))
-            {ClientPassSearchTBox.Text = message;ClientPassSearchTBox.BackColor= Color.LightCoral; return;}
+            { ClientPassSearchTBox.Text = message; ClientPassSearchTBox.BackColor = Color.LightCoral; return; }
             RefreshClientGrid(ClH.SearchByPassport(cnfpsp));
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox2.SelectedIndex == 1) { SimCSearchTariffCBox.Visible = true; SimCSearchTBox.Visible = false; }
+            else {SimCSearchTBox.Visible = true; SimCSearchTariffCBox.Visible= false; }
         }
     }
 }
-/*
-                ClientPasspTBox.Text = ClientGridView.SelectedRows[0].Cells[0].Value?.ToString();
-                ClientPassATBox.Text = ClientGridView.SelectedRows[0].Cells[1].Value?.ToString();
-                ClientNameTBox.Text = ClientGridView.SelectedRows[0].Cells[2].Value?.ToString();
-                ClientAdressTBox.Text = ClientGridView.SelectedRows[0].Cells[3].Value?.ToString();
-                ClientBDateTBox.Text = ClientGridView.SelectedRows[0].Cells[4].Value?.ToString();
+                /*
+                    ClientPasspTBox.Text = ClientGridView.SelectedRows[0].Cells[0].Value?.ToString();
+                        ClientPassATBox.Text = ClientGridView.SelectedRows[0].Cells[1].Value?.ToString();
+                            ClientNameTBox.Text = ClientGridView.SelectedRows[0].Cells[2].Value?.ToString();
+                        ClientAdressTBox.Text = ClientGridView.SelectedRows[0].Cells[3].Value?.ToString();
+                    ClientBDateTBox.Text = ClientGridView.SelectedRows[0].Cells[4].Value?.ToString();
                 */

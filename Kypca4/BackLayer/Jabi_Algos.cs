@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace SotoviyOperator
 {
@@ -87,6 +83,66 @@ namespace SotoviyOperator
                 return false;
             }
             confirmedPassp = text;
+            return true;
+        }
+
+
+
+        public static bool SimCardValidation(string text, out string confirmedSimC, out string message)
+        {
+            message = null;
+            confirmedSimC = null;
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                message = "Поле не может быть пустым!";
+                return false;
+            }
+
+            // Строго: 3 цифры, дефис, 7 цифр
+            if (!(text.Length == 11 && text[3] == '-' && int.TryParse(text.Split('-')[0], out int _) && int.TryParse(text.Split('-')[1], out int _)))
+            {
+                message = "Неверный формат! Ожидается: NNN-NNNNNNN";
+                return false;
+            }
+
+            confirmedSimC = text;
+            return true;
+        }
+
+        public static bool SimCardYearValidation(string text, out int ConfirmedYear, out string message)
+        {
+            ConfirmedYear = 666;
+            message = null;
+            if (!int.TryParse(text, out int year)) { message = "Не число!"; return false; }
+
+            if (100 > year) year += (26 < year) ? 1900 : 2000;
+
+            if (year < 1991) { message = "Симок тогда ещё не придумали"; return false; }
+            //Первая симка была придумана 1991
+
+            int TodayYear = DateTime.Today.Year;
+
+            if (year > TodayYear) { message = "Этот год ещё не наступил"; return false; }
+            ConfirmedYear = year;
+            return true;
+        }
+
+        public static bool SimCardDelValidation(string text, out string confNum, out string msg)
+        {
+            msg = null;
+            confNum = null;
+
+            if (!SimCardValidation(text, out string _, out string msg1))
+            {
+                msg = msg1;
+                return false;
+            }
+            if (!Journal_check(text, out string msg2))
+            {
+                msg = msg2;
+                return false;
+            }
+            confNum = text;
             return true;
         }
 
